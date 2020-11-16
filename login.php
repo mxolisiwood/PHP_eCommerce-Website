@@ -1,3 +1,25 @@
+<?php
+require('connection.inc.php');
+require('functions.inc.php');
+if(isset($_POST['submit'])) {
+   $username=get_safe_value($con,$_POST['username']);
+   $password=get_safe_value($con,$_POST['password']);
+   $sql="select * from admin_users where username ='$username' and password='$password'";
+   $res=mysqli_query($con,$sql);
+   $count=mysqli_num_rows($res);
+   if($count>0){
+    $_SESSION['ADMIN_LOGIN']='yes';
+    $_SESSION['ADMIN_USERNAME']=$username;
+    header('location:categories.php');
+    die();
+
+   }
+   else{
+       $msg="Please enter correct login details";
+   }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +53,7 @@
                      </div>
                      <button type="submit" name="submit" class="btn btn-success btn-flat m-b-30 m-t-30">Sign in</button>
 					</form>
-					<div class="field_error"><?php echo $msg?></div>
+                    <div class="field_error"><?php echo $msg?></div>
                </div>
             </div>
          </div>
